@@ -1,6 +1,6 @@
 # Fluid Variable Fonts Microsite
 
-Variable fonts provide the ability to change granular typography details to best adapt to changing UIs. Here, we demonstrate variable fonts in a series of [interactive demos](https://github.googlefonts.io/fluid) with a fluid theme.
+Variable fonts provide the ability to change granular typography details to best adapt to changing UIs. Here, we demonstrate variable fonts in a series of [interactive demos](https://googlefonts.github.io/fluid) with a fluid theme.
 
 ## Contributing
 
