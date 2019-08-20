@@ -14,110 +14,131 @@
  *  under the License.
  */
 
-var rippleVfContainer = document.getElementById("vf-container");
-var magnifyingGlassContainer = document.getElementById("magnifying-glass-container");
-var magnifyingGlass = document.getElementById("magnifying-glass");
-var mouseCircle = document.getElementById("mouse-circle");
+class MagnifyDemo {
 
-var unblurContainer = document.getElementById("unblur-container");
-var unblurContainerRect = unblurContainer.getBoundingClientRect();
-var unblur = document.getElementById("unblur");
+    constructor() {
 
-var unblurStaticRect = document.getElementById("unblur-static").getBoundingClientRect();
+        this.grid = [];
+        this.gridXDimension = 20;
+        this.gridYDimension = 20;
+        this.allowance = 0.6;
 
-var rippleVfContainerRect = rippleVfContainer.getBoundingClientRect();
-var containerWidth = rippleVfContainerRect.right - rippleVfContainerRect.left;
-var containerHeight = rippleVfContainerRect.bottom - rippleVfContainerRect.top;
+        this.rippleVfContainer = document.getElementById("vf-container");
+        this.magnifyingGlassContainer = document.getElementById("magnifying-glass-container");
+        this.magnifyingGlass = document.getElementById("magnifying-glass");
+        this.mouseCircle = document.getElementById("mouse-circle");
 
-var magnifyingGlassRect = magnifyingGlassContainer.getBoundingClientRect();
-var magnifyingGlassWidth = magnifyingGlassRect.right - magnifyingGlassRect.left;
-var magnifyingGlassHeight = magnifyingGlassRect.bottom - magnifyingGlassRect.top;
+        this.unblurContainer = document.getElementById("unblur-container");
+        this.unblurContainerRect = this.unblurContainer.getBoundingClientRect();
+        this.unblur = document.getElementById("unblur");
 
-var mouseCircleRect = mouseCircle.getBoundingClientRect();
-var mouseCircleWidth = mouseCircleRect.right - mouseCircleRect.left;
-var mouseCircleHeight = mouseCircleRect.bottom - mouseCircleRect.top;
+        this.unblurStaticRect = document.getElementById("unblur-static").getBoundingClientRect();
 
-//needed for toggling demos from display none
-function recomputeBoundsForMagnify(){
-  unblurContainerRect = unblurContainer.getBoundingClientRect();
-  unblurStaticRect = document.getElementById("unblur-static").getBoundingClientRect();
-  rippleVfContainerRect = rippleVfContainer.getBoundingClientRect();
-  containerWidth = rippleVfContainerRect.right - rippleVfContainerRect.left;
-  containerHeight = rippleVfContainerRect.bottom - rippleVfContainerRect.top;
-  magnifyingGlassRect = magnifyingGlassContainer.getBoundingClientRect();
-  magnifyingGlassWidth = magnifyingGlassRect.right - magnifyingGlassRect.left;
-  magnifyingGlassHeight = magnifyingGlassRect.bottom - magnifyingGlassRect.top;
-  mouseCircleRect = mouseCircle.getBoundingClientRect();
-  mouseCircleWidth = mouseCircleRect.right - mouseCircleRect.left;
-  mouseCircleHeight = mouseCircleRect.bottom - mouseCircleRect.top;
-}
+        this.rippleVfContainerRect = this.rippleVfContainer.getBoundingClientRect();
+        this.containerWidth = this.rippleVfContainerRect.right - this.rippleVfContainerRect.left;
+        this.containerHeight = this.rippleVfContainerRect.bottom - this.rippleVfContainerRect.top;
 
-/***** GRID SETUP ****/
-var mGrid = [];
-var mGridXDimension = 20;
-var mGridYDimension = 20;
-const allowance = 0.6;
+        this.magnifyingGlassRect = this.magnifyingGlassContainer.getBoundingClientRect();
+        this.magnifyingGlassWidth = this.magnifyingGlassRect.right - this.magnifyingGlassRect.left;
+        this.magnifyingGlassHeight = this.magnifyingGlassRect.bottom - this.magnifyingGlassRect.top;
 
-function makeCell(rowContainer, letter, x, y){
-  let element = document.createElement("SPAN");
-  element.innerHTML = letter;
-  rowContainer.appendChild(element);
-  return [element, x, y];
-}
+        this.mouseCircleRect = this.mouseCircle.getBoundingClientRect();
+        this.mouseCircleWidth = this.mouseCircleRect.right - this.mouseCircleRect.left;
+        this.mouseCircleHeight = this.mouseCircleRect.bottom - this.mouseCircleRect.top;
 
-function setUpGrid(element, mGridContent, mGridX, mGridY){
-  let mGridContentSplit = mGridContent.split("");
-  for(var y = 0; y < mGridY; y++){
-    let rowHTMLElement = document.createElement("DIV");
-    for(var x = 0; x < mGridY; x++){
-      mGrid.push(makeCell(rowHTMLElement, mGridContentSplit[(x + y) % mGridContent.length], x, y))
+        this.grid = [];
+
+        this.setUpGrid(this.rippleVfContainer, "a", 20, 20);
+
+        this.grid = [];
+
+        this.setUpGrid(this.magnifyingGlass, "a", 11, 11);
+
+        document.getElementById("demo-magnify").addEventListener("mousemove", (evt) => this.moveMouseHandler(evt))
+        this.setupGlass();
     }
-    element.appendChild(rowHTMLElement);
-  }
+
+    setupGlass() {
+        for (var i = 0; i < 11; i++) {
+            let cellsWithinRadius = this.grid.filter(cell => Math.abs(this.calculateDistanceFromOrigin(5, 5, cell) - i) < this.allowance)
+            cellsWithinRadius.map(cell => {
+                cell[0].style.fontSize = (32 - i * 3) + "px";
+                cell[0].style.fontVariationSettings = `"opsz" ${(32 - i * 3)}, "GRAD" ${(1 - i * 0.2)}`;
+            })
+        }
+    }
+
+    calculateDistanceFromOrigin(originX, originY, cell) {
+        return Math.sqrt((cell[1] - originX) ** 2 + (cell[2] - originY) ** 2);
+    }
+
+    makeCell(rowContainer, letter, x, y) {
+        let element = document.createElement("SPAN");
+        element.innerHTML = letter;
+        rowContainer.appendChild(element);
+        return [element, x, y];
+    }
+
+    setUpGrid(element, gridContent, gridX, gridY) {
+        let gridContentSplit = gridContent.split("");
+        for (var y = 0; y < gridY; y++) {
+            let rowHTMLElement = document.createElement("DIV");
+            for (var x = 0; x < gridY; x++) {
+                this.grid.push(this.makeCell(rowHTMLElement, gridContentSplit[(x + y) % gridContent.length], x, y))
+            }
+            element.appendChild(rowHTMLElement);
+        }
+    }
+
+    //needed for toggling demos from display none
+    recomputeBounds() {
+        this.unblurContainerRect = this.unblurContainer.getBoundingClientRect();
+        this.unblurStaticRect = document.getElementById("unblur-static").getBoundingClientRect();
+        this.rippleVfContainerRect = this.rippleVfContainer.getBoundingClientRect();
+        this.containerWidth = this.rippleVfContainerRect.right - this.rippleVfContainerRect.left;
+        this.containerHeight = this.rippleVfContainerRect.bottom - this.rippleVfContainerRect.top;
+        this.magnifyingGlassRect = this.magnifyingGlassContainer.getBoundingClientRect();
+        this.magnifyingGlassWidth = this.magnifyingGlassRect.right - this.magnifyingGlassRect.left;
+        this.magnifyingGlassHeight = this.magnifyingGlassRect.bottom - this.magnifyingGlassRect.top;
+        this.mouseCircleRect = this.mouseCircle.getBoundingClientRect();
+        this.mouseCircleWidth = this.mouseCircleRect.right - this.mouseCircleRect.left;
+        this.mouseCircleHeight = this.mouseCircleRect.bottom - this.mouseCircleRect.top;
+    }
+
+    start() {
+        this.recomputeBounds();
+    }
+
+    onResize() {
+        this.recomputeBounds();
+    }
+
+    stop() {
+        //do nothing
+    }
+
+
+    moveMouseHandler(evt) {
+        let evtX = evt.clientX - this.rippleVfContainerRect.left;
+        let evtY = evt.clientY - this.rippleVfContainerRect.top;
+        this.magnifyingGlassContainer.style.transform = `translate3d(${evtX - this.magnifyingGlassWidth/2}px, ${evtY- this.magnifyingGlassHeight/2}px, 0px)`
+        let x = Math.floor((evtX) / (Math.abs(this.containerWidth / this.gridXDimension)));
+        let y = Math.floor((evtY) / (Math.abs(this.containerHeight / this.gridYDimension)));
+
+        let properXPosition = x * (Math.abs(this.containerWidth / this.gridXDimension));
+        let properYPosition = y * (Math.abs(this.containerHeight / this.gridYDimension));
+
+        let xOffset = properXPosition - evtX;
+        let yOffset = properYPosition - evtY;
+
+        this.magnifyingGlass.style.transform = `translate3d(${xOffset}px, ${yOffset}px, 0px)`;
+
+        evtX = evt.clientX - this.unblurStaticRect.left;
+        evtY = evt.clientY - this.unblurStaticRect.top;
+
+        this.unblurContainer.style.transform = `translate3d(${evtX - this.magnifyingGlassWidth/2}px, ${evtY- this.magnifyingGlassHeight/2 + 35}px, 0px)`;
+        this.unblur.style.transform = `translate3d(${(this.unblurStaticRect.left + this.magnifyingGlassWidth/2) - evt.clientX}px, ${(this.unblurStaticRect.top + this.magnifyingGlassWidth/2) - evt.clientY}px, 0px)`
+
+        this.mouseCircle.style.transform = `translate3d(${evt.clientX - this.magnifyingGlassWidth/2}px, ${evt.clientY - this.magnifyingGlassHeight/2}px, 0px)`;
+    }
 }
-
-function calculateDistanceFromOrigin(originX, originY, cell){
-  return Math.sqrt((cell[1] - originX) ** 2 + (cell[2] - originY) ** 2);
-}
-
-setUpGrid(rippleVfContainer, "a", 20, 20);
-
-mGrid = [];
-setUpGrid(magnifyingGlass, "a", 11, 11);
-
-function setupGlass(){
-  for(var i = 0; i < 11; i++){
-    let cellsWithinRadius = mGrid.filter(cell => Math.abs(calculateDistanceFromOrigin(5, 5, cell) - i) < allowance )
-    cellsWithinRadius.map(cell => {
-      cell[0].style.fontSize = (32 - i * 3) + "px";
-      cell[0].style.fontVariationSettings = `"opsz" ${(32 - i * 3)}, "GRAD" ${(1 - i * 0.2)}`;
-    })
-  }
-}
-
-setupGlass();
-
-document.getElementById("demo-magnify").addEventListener("mousemove", function(evt){
-  let evtX = evt.clientX - rippleVfContainerRect.left;
-  let evtY = evt.clientY - rippleVfContainerRect.top;
-  magnifyingGlassContainer.style.transform = `translate3d(${evtX - magnifyingGlassWidth/2}px, ${evtY- magnifyingGlassHeight/2}px, 0px)`
-  let x = Math.floor((evtX)/(Math.abs(containerWidth/mGridXDimension)));
-  let y = Math.floor((evtY)/(Math.abs(containerHeight/mGridYDimension)));
-
-  let properXPosition = x * (Math.abs(containerWidth/mGridXDimension));
-  let properYPosition = y * (Math.abs(containerHeight/mGridYDimension));
-
-  let xOffset = properXPosition - evtX;
-  let yOffset = properYPosition - evtY;
-
-  magnifyingGlass.style.transform = `translate3d(${xOffset}px, ${yOffset}px, 0px)`;
-
-  evtX = evt.clientX - unblurStaticRect.left;
-  evtY = evt.clientY - unblurStaticRect.top;
-
-  unblurContainer.style.transform = `translate3d(${evtX - magnifyingGlassWidth/2}px, ${evtY- magnifyingGlassHeight/2 + 35}px, 0px)`;
-  unblur.style.transform = `translate3d(${(unblurStaticRect.left + magnifyingGlassWidth/2) - evt.clientX}px, ${(unblurStaticRect.top + magnifyingGlassWidth/2) - evt.clientY}px, 0px)`
-
-  mouseCircle.style.transform = `translate3d(${evt.clientX - magnifyingGlassWidth/2}px, ${evt.clientY - magnifyingGlassHeight/2}px, 0px)`;
-
-})

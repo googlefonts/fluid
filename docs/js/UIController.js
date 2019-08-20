@@ -18,36 +18,71 @@ let currentlySelectedButtonId = "logo";
 let waterAssets = document.getElementById("water-assets");
 
 let buttonMappings = {
-  "logo": ["demo-home"],
-  "button-magnify": ["demo-magnify", "water-assets"],
-  "button-wave": ["demo-wave"],
-  "button-beach": ["demo-beach", "defaultCanvas0", "white-bg"]
+    "logo": ["demo-home"],
+    "button-magnify": ["demo-magnify", "water-assets"],
+    "button-wave": ["demo-wave"],
+    "button-beach": ["demo-beach", "defaultCanvas0", "white-bg"]
 }
 
-function toggleDemo(evt){
-  const element = evt.srcElement;
+function toggleDemo(evt) {
+    const element = evt.srcElement;
 
-  if(element.id === currentlySelectedButtonId) return;
+    if (element.id === currentlySelectedButtonId) return;
 
-  //activate items
-  buttonMappings[element.id].forEach((eleId) => {
-    document.getElementById(eleId).classList.remove("hidden");
-  })
-  document.getElementById(element.id).classList.add("selected");
+    //activate items
+    buttonMappings[element.id].forEach((eleId) => {
+        document.getElementById(eleId).classList.remove("hidden");
+    })
+    document.getElementById(element.id).classList.add("selected");
 
-  //deactivate items
-  buttonMappings[currentlySelectedButtonId].forEach((eleId) => {
-    document.getElementById(eleId).classList.add("hidden");
-  })
-  document.getElementById(currentlySelectedButtonId).classList.remove("selected");
+    //deactivate items
+    buttonMappings[currentlySelectedButtonId].forEach((eleId) => {
+        document.getElementById(eleId).classList.add("hidden");
+    })
+    document.getElementById(currentlySelectedButtonId).classList.remove("selected");
 
-  currentlySelectedButtonId = element.id;
-    if(element.id === "button-magnify") recomputeBoundsForMagnify();
-    if(element.id === "button-wave") recomputeBoundsWave();
-    if(element.id === "button-beach") loop();
-    else {noLoop();}
+    currentlySelectedButtonId = element.id;
+
+    if (element.id === "button-magnify") {
+        magnifyDemo.start();
+    }
+    if (element.id === "button-wave") {
+        waveDemo.start();
+    } else {
+        waveDemo.stop();
+    }
+    if (element.id === "button-beach") {
+        beachDemo.start();
+    } else {
+        beachDemo.stop();
+    }
 }
 
 document.querySelectorAll('.nav-icon').forEach(item => {
-  item.addEventListener('click', toggleDemo);
+    item.addEventListener('click', toggleDemo);
 });
+
+let beachDemo = new BeachDemo();
+let waveDemo = new WaveDemo();
+let magnifyDemo = new MagnifyDemo();
+
+var resizeId;
+
+function whileResizing() {
+    clearTimeout(resizeId);
+    resizeId = setTimeout(fireResizeEvents, 500);
+}
+
+function fireResizeEvents() {
+    console.log("fire resize")
+    beachDemo.onResize();
+    waveDemo.onResize();
+    magnifyDemo.onResize();
+}
+
+window.onresize = whileResizing;
+
+if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    document.querySelector(".rail").style.display = "none";
+    document.getElementById("if-mobile").style.display = "block";
+}
