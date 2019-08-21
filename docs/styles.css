@@ -66,7 +66,7 @@
 
 @font-face {
     font-family: "AmstelvarVF";
-    src: url('/docs/assets/fonts/AmstelvarAlpha-VF.ttf') format('truetype');
+    src: url('/assets/fonts/AmstelvarAlpha-VF.ttf') format('truetype');
     font-display: swap;
     font-style: normal;
     font-weight: normal;
@@ -227,7 +227,7 @@ span {
 
 @font-face {
     font-family: "Roboto VF";
-    src: url('/docs/assets/fonts/RobotoDelta_v2-VF.ttf') format('truetype');
+    src: url('/assets/fonts/RobotoDelta_v2-VF.ttf') format('truetype');
     font-display: swap;
     font-style: normal;
     font-weight: 100 900;
@@ -502,7 +502,7 @@ span {
 
 @font-face {
     font-family: "Decovar";
-    src: url('/docs/assets/fonts/DecovarAlpha-VF.ttf') format('truetype');
+    src: url('/assets/fonts/DecovarAlpha-VF.ttf') format('truetype');
     font-display: swap;
     font-style: normal;
     font-weight: 100 900;

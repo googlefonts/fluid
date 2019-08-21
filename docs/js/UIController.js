@@ -74,7 +74,6 @@ function whileResizing() {
 }
 
 function fireResizeEvents() {
-    console.log("fire resize")
     beachDemo.onResize();
     waveDemo.onResize();
     magnifyDemo.onResize();

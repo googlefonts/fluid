@@ -170,7 +170,6 @@ class ObjectPool {
             let returnCell = cells[0];
             return returnCell;
         } else {
-            //console.log(widthIndex, weightIndex, this.objectPool[widthIndex][weightIndex])
             let newCell = this.makeWaveCell(this.objectPool[widthIndex][weightIndex][0][1], this.objectPool[widthIndex][weightIndex][0][2]);
             this.objectPool[widthIndex][weightIndex].push(newCell);
             return newCell;
