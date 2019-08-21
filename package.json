@@ -8,19 +8,18 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.config.js",
-    "start": "webpack-dev-server --open"
+    "build": "webpack --config webpack.config.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/khanniie/fluid.git"
+    "url": "git+https://github.com/googlefonts/fluid.git"
   },
-  "author": "khanniie",
+  "author": "googlefonts",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/khanniie/fluid/issues"
+    "url": "https://github.com/googlefonts/fluid/issues"
   },
-  "homepage": "https://github.com/khanniie/fluid#readme",
+  "homepage": "https://github.com/googlefonts/fluid#readme",
   "devDependencies": {
     "path": "^0.12.7",
     "webpack": "^4.39.2",
@@ -28,7 +27,6 @@
     "webpack-dev-server": "^3.8.0"
   },
   "dependencies": {
-    "fs": "0.0.1-security",
     "liquidfun-emscripten": "^1.1.4",
     "lodash": "^4.17.15",
     "noisejs": "^2.1.0"
