@@ -14,9 +14,9 @@
  *  under the License.
  */
 
-let beach = require("./demoClasses/BeachDemo")
-let wave = require("./demoClasses/WaveDemo")
-let magnify = require("./demoClasses/MagnifyDemo")
+let beach = require("./demos/BeachDemo")
+let wave = require("./demos/WaveDemo")
+let magnify = require("./demos/MagnifyDemo")
 
 let beachDemo = new beach.BeachDemo();
 let waveDemo = new wave.WaveDemo();

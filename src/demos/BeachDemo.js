@@ -15,6 +15,7 @@
  */
 
 let noisejs = require("noisejs");
+let canvasHelper = require("../helpers/Painter");
 var noise = new noisejs.Noise(Math.random());
 
 const phraseBank = [
@@ -23,51 +24,6 @@ const phraseBank = [
     "Silver mist suffused the deck of the ship",
     "I watched the storm, so beautiful yet terrific"
 ];
-
-class Painter {
-    constructor(can, ctx) {
-        this.canvas = can;
-        this.context = ctx;
-    }
-
-    clearCanvas() {
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    }
-
-    fillStyle(fillHex) {
-        this.context.fillStyle = fillHex;
-    }
-
-    strokeStyle(strokeHex) {
-        this.context.strokeStyle = strokeHex;
-
-    }
-
-    setOpacity(a) {
-        this.context.globalAlpha = a;
-    }
-
-    lineWidth(wid) {
-        this.context.lineWidth = wid;
-    }
-
-    begin() {
-        this.context.beginPath();
-    }
-
-    drawFill() {
-        this.context.fill();
-    }
-
-    drawStroke() {
-        this.context.stroke();
-    }
-
-    vertex(x, y) {
-        this.context.lineTo(x, y);
-    }
-
-}
 
 class BeachDemo {
     constructor() {
@@ -79,7 +35,7 @@ class BeachDemo {
         this.beachStepAmount = 1;
         this.waveStopped = false;
         this.frameNumber = 0;
-        this.painter = new Painter(this.canvas, this.canvasContext);
+        this.painter = new canvasHelper.Painter(this.canvas, this.canvasContext);
         this.animationRequest = null;
         this.windowWidth = window.innerWidth;
         this.windowHeight = window.innerHeight;
