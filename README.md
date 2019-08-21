@@ -6,7 +6,9 @@ Variable fonts provide the ability to change granular typography details to best
 
 Want to contribute?  Awesome - thanks for helping!
 
-The source for this site is in the `docs` folder.
+The source for this site is in the `src` folder.  Because it's hosted with GitHub Pages, the bundled version is in `docs`.  (That's the magic name GH looks for to host on Pages.  You might be used to a `public` or `site` folder serving this purpose.)
+
+Please use `yarn run build` to update the bundle, and include it in your PRs.
 
 ## License ##
 
