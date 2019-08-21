@@ -14,6 +14,10 @@
  *  under the License.
  */
 
+let beach = require("./BeachDemo")
+let wave = require("./BeachDemo")
+let magnify = require("./magnifyDemo")
+
 let currentlySelectedButtonId = "logo";
 let waterAssets = document.getElementById("water-assets");
 
@@ -21,7 +25,7 @@ let buttonMappings = {
     "logo": ["demo-home"],
     "button-magnify": ["demo-magnify", "water-assets"],
     "button-wave": ["demo-wave"],
-    "button-beach": ["demo-beach", "defaultCanvas0", "white-bg"]
+    "button-beach": ["demo-beach", "beach-canvas", "beach-bg"]
 }
 
 function toggleDemo(evt) {

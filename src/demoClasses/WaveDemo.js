@@ -26,50 +26,50 @@ class FluidSimulation {
         this.velocityIterations = velocityIterations;
         this.positionIterations = positionIterations;
 
-        var bodyDef = new b2BodyDef();
-        var ground = world.CreateBody(bodyDef);
+        let bodyDef = new b2BodyDef();
+        let ground = world.CreateBody(bodyDef);
 
-        var mouseDef = new b2BodyDef();
+        let mouseDef = new b2BodyDef();
         mouseDef.type = b2_staticBody;
         mouseDef.position.Set(0, 2);
-        var mouseBody = world.CreateBody(mouseDef);
+        let mouseBody = world.CreateBody(mouseDef);
         this.mouse = mouseBody;
 
-        var mouseShape = new b2PolygonShape();
+        let mouseShape = new b2PolygonShape();
         mouseShape.SetAsBoxXY(0.05, 0.05);
         mouseBody.CreateFixtureFromShape(mouseShape, 5);
 
         bodyDef.type = b2_staticBody;
         bodyDef.position.Set(0, 1);
-        var body = world.CreateBody(bodyDef);
+        let body = world.CreateBody(bodyDef);
 
-        var leftWall = new b2PolygonShape();
+        let leftWall = new b2PolygonShape();
         leftWall.SetAsBoxXYCenterAngle(0.1, 1, new b2Vec2(1.3, 0), 0);
         body.CreateFixtureFromShape(leftWall, 5);
 
-        var topWall = new b2PolygonShape();
+        let topWall = new b2PolygonShape();
         topWall.SetAsBoxXYCenterAngle(1.3, 0.1, new b2Vec2(0, 1.05), 0);
         body.CreateFixtureFromShape(topWall, 5);
 
-        var rightWall = new b2PolygonShape();
+        let rightWall = new b2PolygonShape();
         rightWall.SetAsBoxXYCenterAngle(0.1, 1, new b2Vec2(-1.3, 0), 0);
         body.CreateFixtureFromShape(rightWall, 5);
 
-        var bottomWall = new b2PolygonShape();
+        let bottomWall = new b2PolygonShape();
         bottomWall.SetAsBoxXYCenterAngle(1.3, 0.1, new b2Vec2(0, -1.05), 0);
         body.CreateFixtureFromShape(bottomWall, 5);
 
-        var psd = new b2ParticleSystemDef();
+        let psd = new b2ParticleSystemDef();
         psd.radius = 0.075;
         psd.dampingStrength = 0.5;
 
-        var particleSystem = world.CreateParticleSystem(psd);
-        var box = new b2PolygonShape();
+        let particleSystem = world.CreateParticleSystem(psd);
+        let box = new b2PolygonShape();
         box.SetAsBoxXYCenterAngle(0.65, 0.65, new b2Vec2(0, 1.0), 0);
 
-        var particleGroupDef = new b2ParticleGroupDef();
+        let particleGroupDef = new b2ParticleGroupDef();
         particleGroupDef.shape = box;
-        var particleGroup = particleSystem.CreateParticleGroup(particleGroupDef);
+        let particleGroup = particleSystem.CreateParticleGroup(particleGroupDef);
     }
 
     step() {
@@ -131,9 +131,9 @@ class ObjectPool {
         element.style.fontVariationSettings = `"wght" ${weight}, "wdth" ${width}, "YTRA" 850`;
         element.style.fontSize = this.fontSize + "px";
         element.style.lineHeight = (this.fontSize * 0.7) + "px";
-        element.style.transform = 'translate3D( 0px, 2000px, 0px)'; //start off the page
+        element.style.transform = 'translate3D( 0px, 2000px, 0px)'; //start wayyyyyy off the page
         this.container.appendChild(element);
-        return [true, width, weight, element, ""]; //[if cell is available, HTMLelement, key]
+        return [true, width, weight, element, ""]; 
     }
 
     setUpObjectPool() {
@@ -191,8 +191,8 @@ class WaveDemo {
     constructor() {
 
         this.animationRequest = null;
-        this.windowWidth = document.getElementById("demo").clientWidth;
-        this.windowHeight = document.getElementById("demo").clientHeight;
+        this.demoWidth = document.getElementById("demo").clientWidth;
+        this.demoHeight = document.getElementById("demo").clientHeight;
 
 
         //DOM elements
@@ -202,19 +202,19 @@ class WaveDemo {
         this.mouseSquareRect = this.mouseSquare.getBoundingClientRect();
 
         //setup fluid sim
-        var gravity = new b2Vec2(0, -10);
-        var timeStep = 1.0 / 60.0;
-        var velocityIterations = 8;
-        var positionIterations = 3;
-        var baselineAmtPerCell = 5;
+        let gravity = new b2Vec2(0, -10);
+        let timeStep = 1.0 / 60.0;
+        let velocityIterations = 8;
+        let positionIterations = 3;
+        let baselineAmtPerCell = 5;
 
         this.fluidSim = new FluidSimulation(world, timeStep, velocityIterations, positionIterations);
 
-        this.fontSize = this.windowWidth / (35); //TODO - needs refinement for viewport
-        this.waveXPositionOffset = this.windowWidth / 2 - this.fontSize / 2;
-        this.waveXPositionScale = this.windowWidth / 2.5 * 1.1;
-        this.waveYPositionOffset = this.windowHeight + this.fontSize / 2;
-        this.waveYPositionScale = (this.windowWidth / 2.5) * 1.15;
+        this.fontSize = this.demoWidth / (35); //TODO - needs refinement for viewport
+        this.waveXPositionOffset = this.demoWidth / 2 - this.fontSize / 2;
+        this.waveXPositionScale = this.demoWidth / 2.5 * 1.1;
+        this.waveYPositionOffset = this.demoHeight + this.fontSize / 2;
+        this.waveYPositionScale = (this.demoWidth / 2.5) * 1.15;
 
         this.objectPool = new ObjectPool(this.fontSize, 45, 100, 5, 100, 900, 100, this.fluidSim.getNumParticles(), baselineAmtPerCell, this.container);
         this.container.addEventListener("mousemove", (ele) => this.mouseMoveHandler(ele));
@@ -239,18 +239,18 @@ class WaveDemo {
     recomputeBounds() {
         this.containerRect = this.container.getBoundingClientRect();
         this.mouseSquareRect = this.mouseSquare.getBoundingClientRect();
-        this.windowWidth = document.getElementById("demo").clientWidth;
-        this.windowHeight = document.getElementById("demo").clientHeight;
+        this.demoWidth = document.getElementById("demo").clientWidth;
+        this.demoHeight = document.getElementById("demo").clientHeight;
 
-        this.waveXPositionOffset = this.windowWidth / 2 - this.fontSize / 2;
-        this.waveXPositionScale = this.windowWidth / 2.5 * 1.1;
-        this.waveYPositionOffset = this.windowHeight + this.fontSize / 2;
-        this.waveYPositionScale = (this.windowWidth / 2.5) * 1.15;
+        this.waveXPositionOffset = this.demoWidth / 2 - this.fontSize / 2;
+        this.waveXPositionScale = this.demoWidth / 2.5 * 1.1;
+        this.waveYPositionOffset = this.demoHeight + this.fontSize / 2;
+        this.waveYPositionScale = (this.demoWidth / 2.5) * 1.15;
     }
 
     drawParticleSystem(system) {
-        var particles = system.GetPositionBuffer();
-        var maxParticles = particles.length;
+        let particles = system.GetPositionBuffer();
+        let maxParticles = particles.length;
 
         this.objectPool.cellsInUse.map(cell => {
             cell[3].style.transform = 'translate3D( 0px, 2000px, 0px)'
@@ -259,18 +259,18 @@ class WaveDemo {
 
         this.objectPool.cellsInUse = []
 
-        for (var i = 0; i < maxParticles; i += 2) {
+        for (let i = 0; i < maxParticles; i += 2) {
             let positionVectorX = particles[i] * this.waveXPositionScale + this.waveXPositionOffset;
             let positionVectorY = -particles[i + 1] * this.waveYPositionScale + this.waveYPositionOffset;
 
-            let partOneH = this.windowHeight * 1 / 2;
-            let partTwoH = this.windowHeight - partOneH;
+            let partOneH = this.demoHeight * 1 / 2;
+            let partTwoH = this.demoHeight - partOneH;
 
-            let partOneW = this.windowWidth;
-            let partTwoW = this.windowWidth - partOneH;
+            let partOneW = this.demoWidth;
+            let partTwoW = this.demoWidth - partOneH;
 
-            let weight = 800 * (clampNumber(positionVectorY, partTwoH, this.windowHeight) - partTwoH) / (partOneH) + 100;
-            let width = 55 * (clampNumber(positionVectorX, 0, this.windowWidth)) / (this.windowWidth) + 45;
+            let weight = 800 * (clampNumber(positionVectorY, partTwoH, this.demoHeight) - partTwoH) / (partOneH) + 100;
+            let width = 55 * (clampNumber(positionVectorX, 0, this.demoWidth)) / (this.demoWidth) + 45;
 
             let currentElement = this.objectPool.grabCorrectObject(width, weight);
             currentElement[3].style.transform = 'translate3D(' + Math.floor(positionVectorX) + 'px,' + Math.floor(positionVectorY) + 'px, 1px)';
@@ -290,3 +290,5 @@ class WaveDemo {
         this.recomputeBounds();
     }
 }
+
+module.exports.WaveDemo = WaveDemo;

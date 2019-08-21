@@ -142,3 +142,5 @@ class MagnifyDemo {
         this.mouseCircle.style.transform = `translate3d(${evt.clientX - this.magnifyingGlassWidth/2}px, ${evt.clientY - this.magnifyingGlassHeight/2}px, 0px)`;
     }
 }
+
+module.exports.MagnifyDemo = MagnifyDemo;

@@ -1,0 +1,36 @@
+{
+  "name": "fluid",
+  "version": "1.0.0",
+  "description": "variable fonts showcase",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack.config.js",
+    "start": "webpack-dev-server --open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khanniie/fluid.git"
+  },
+  "author": "khanniie",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/khanniie/fluid/issues"
+  },
+  "homepage": "https://github.com/khanniie/fluid#readme",
+  "devDependencies": {
+    "path": "^0.12.7",
+    "webpack": "^4.39.2",
+    "webpack-cli": "^3.3.7",
+    "webpack-dev-server": "^3.8.0"
+  },
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "liquidfun-emscripten": "^1.1.4",
+    "lodash": "^4.17.15",
+    "noisejs": "^2.1.0"
+  }
+}
