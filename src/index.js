@@ -23,49 +23,66 @@ let waveDemo = new wave.WaveDemo();
 let magnifyDemo = new magnify.MagnifyDemo();
 
 document.querySelectorAll('.nav-icon').forEach(item => {
-    item.addEventListener('click', toggleDemo);
+    item.addEventListener('click', onNavIconClick);
 });
 
-let currentlySelectedButtonId = "logo";
+let currentlySelectedDemoName = "logo";
 let waterAssets = document.getElementById("water-assets");
-let buttonMappings = {
+let idsByDemoName = {
     "logo": ["demo-home"],
-    "button-magnify": ["demo-magnify", "water-assets"],
-    "button-wave": ["demo-wave"],
-    "button-beach": ["demo-beach", "beach-canvas", "beach-bg"]
+    "magnify": ["demo-magnify", "water-assets"],
+    "wave": ["demo-wave"],
+    "beach": ["demo-beach", "beach-canvas", "beach-bg"]
 }
 
-function toggleDemo(evt) {
+function onNavIconClick(evt) {
     const element = evt.srcElement;
+    const demoName = element.id.split('-').pop();
 
-    if (element.id === currentlySelectedButtonId) return;
+    toggleDemo(demoName);
+}
+
+function toggleDemo(demoName) {
+    if (demoName === currentlySelectedDemoName) return;
 
     //activate items
-    buttonMappings[element.id].forEach((eleId) => {
+    idsByDemoName[demoName].forEach((eleId) => {
         document.getElementById(eleId).classList.remove("hidden");
-    })
-    document.getElementById(element.id).classList.add("selected");
+    });
+
+    const navIconId = demoName === 'logo'
+        ? 'logo'
+        : `button-${ demoName }`;
+    document.getElementById(navIconId).classList.add("selected");
 
     //deactivate items
-    buttonMappings[currentlySelectedButtonId].forEach((eleId) => {
+    idsByDemoName[currentlySelectedDemoName].forEach((eleId) => {
         document.getElementById(eleId).classList.add("hidden");
     })
-    document.getElementById(currentlySelectedButtonId).classList.remove("selected");
 
-    currentlySelectedButtonId = element.id;
+    const prevNavIconId = currentlySelectedDemoName === 'logo'
+        ? 'logo'
+        : `button-${ currentlySelectedDemoName }`;
+    document.getElementById(prevNavIconId).classList.remove("selected");
 
-    if (element.id === "button-magnify") {
+    currentlySelectedDemoName = demoName;
+
+    if (demoName === "magnify") {
         magnifyDemo.start();
     }
-    if (element.id === "button-wave") {
+    if (demoName === "wave") {
         waveDemo.start();
     } else {
         waveDemo.stop();
     }
-    if (element.id === "button-beach") {
+    if (demoName === "beach") {
         beachDemo.start();
     } else {
         beachDemo.stop();
+    }
+
+    if (demoName !== 'logo') {
+        document.location.hash = '#' + demoName;
     }
 }
 
@@ -87,4 +104,11 @@ window.onresize = whileResizing;
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
     document.querySelector(".rail").style.display = "none";
     document.getElementById("if-mobile").style.display = "block";
+}
+
+{
+    let demoNameFromHash = document.location.hash.substr(1);
+    if (idsByDemoName[demoNameFromHash]) {
+        toggleDemo(demoNameFromHash);
+    }
 }
