@@ -80,6 +80,10 @@ function toggleDemo(demoName) {
     } else {
         beachDemo.stop();
     }
+
+    if (demoName !== 'logo') {
+        document.location.hash = '#' + demoName;
+    }
 }
 
 var resizeId;
@@ -100,4 +104,11 @@ window.onresize = whileResizing;
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
     document.querySelector(".rail").style.display = "none";
     document.getElementById("if-mobile").style.display = "block";
+}
+
+{
+    let demoNameFromHash = document.location.hash.substr(1);
+    if (idsByDemoName[demoNameFromHash]) {
+        toggleDemo(demoNameFromHash);
+    }
 }
