@@ -22,7 +22,7 @@
   "homepage": "https://github.com/googlefonts/fluid#readme",
   "devDependencies": {
     "path": "^0.12.7",
-    "webpack": "^4.39.2",
+    "webpack": "^5.105.4",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.8.0"
   },
